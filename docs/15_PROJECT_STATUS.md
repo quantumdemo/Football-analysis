@@ -21,21 +21,20 @@
 | Stage 14 | Final Integration & Release Readiness | **PASS** | Complete |
 | Stage 15 | Full System Audit | **PASS** | Complete |
 | Stage 16 | Historical Validation & Backtesting | **PASS** | Complete |
-| Stage 17 | Shadow Test | NOT STARTED | Pending Stage Protocol |
+| Stage 17 | Shadow / Paper Trading Engine | **PASS** | Complete |
 | Stage 18 | Production Database Setup | NOT STARTED | Pending Stage Protocol |
 
 ---
 
-## STAGE 16 HISTORICAL VALIDATION REPORT
+## STAGE 17 SHADOW TRADING REPORT
 
 ### 1. OVERALL STATUS: PASS
-The Football AI Intelligence System has completed Stage 16 Historical Validation & Backtesting, evaluating multi-market performance without future data leakage.
+The Football AI Intelligence System has completed Stage 17 Shadow / Paper Trading, running paper trading without financial execution, logging immutable pre-kickoff prediction records, settling post-match without retroactive alterations, and evaluating stability and calibration gates.
 
-### 2. PERFORMANCE BREAKDOWN SUMMARY
-- **Temporal Anti-Leakage Enforced**: All predictions use strictly pre-kickoff evidence (`published_at <= scheduled_time`).
-- **Supported Market Families Evaluated**: 1X2, Goals (Over/Under 2.5), BTTS, Corners, Cards, Offsides, and Player props.
-- **Metric Breakdowns**: Generated performance breakdowns by competition, market family, and data-availability level.
-- **Abstention Behavior Verified**: `NO_BET` abstention triggers consistently when research evidence is missing or conflicting.
+### 2. SHADOW TRADING SUMMARY
+- **Immutability Guard Enforced**: Paper predictions logged pre-kickoff cannot be retroactively altered (`ValidationError` raised on duplicate prediction attempts).
+- **Recorded Fields**: Prediction ID, prediction timestamp, kickoff time, evidence count, model/feature version, 1X2 probabilities, expected goals, candidate markets, and NO_BET decisions.
+- **Gate Monitoring**: Evaluated stability (data outages & stale sources) and calibration (Log Loss & Brier score) gates.
 
 ---
 
@@ -57,3 +56,4 @@ The Football AI Intelligence System has completed Stage 16 Historical Validation
 - **Stage 14**: Connected all 14 stages into full end-to-end pipeline (`FootballAIPipeline` in `src/pipeline.py`), passed comprehensive integration, regression, failure-mode, and release readiness test suite (`tests/test_integration_and_release.py`), and produced release readiness report. Status: **PASS**.
 - **Stage 15**: Implemented full system auditor (`SystemAuditor` in `src/audit/system_audit.py`) and specification (`docs/16_STAGE15_AUDIT_SPEC.md`). Verified 100% compliance with master rules, zero critical findings, deterministic output reproducibility, and source control security (`tests/test_system_audit.py`). Status: **PASS**.
 - **Stage 16**: Implemented multi-market historical validation engine (`HistoricalValidationEngine` in `src/backtesting/historical_validator.py`), evaluating performance chronologically across market families, measuring calibration/Brier/log loss/abstention, and breaking down results by competition, market family, and data availability (`tests/test_historical_validation.py`). Status: **PASS**.
+- **Stage 17**: Implemented shadow paper trading engine (`ShadowTradingEngine` in `src/backtesting/shadow_trader.py`), recording immutable pre-kickoff prediction records (`ShadowPredictionRecord`), settling predictions post-match without retroactive alterations, and evaluating stability and calibration gates (`tests/test_shadow_trader.py`). Status: **PASS**.
