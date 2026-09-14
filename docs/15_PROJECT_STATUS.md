@@ -29,20 +29,20 @@
 | Stage 22 | Continuous Evaluation & Calibration | **PASS** | Complete |
 | Stage 23 | Controlled Model Updates & Evolution | **PASS** | Complete |
 | Stage 24 | New Markets, Features & Data Sources | **PASS** | Complete |
-| Stage 25 | System Completion | NOT STARTED | Pending Stage Protocol |
+| Stage 25 | System Completion & Product Evolution | **PASS** | Complete |
 
 ---
 
-## STAGE 24 EXTENSION PROTOCOL REPORT
+## STAGE 25 PRODUCT EVOLUTION & GOVERNANCE REPORT
 
 ### 1. OVERALL STATUS: PASS
-The Football AI Intelligence System has completed Stage 24 New Markets, Features & Data Sources, establishing strict onboarding protocols for adding new markets, features, and research evidence sources.
+The Football AI Intelligence System has completed Stage 25 Long-Term Product Evolution & Governance, establishing ongoing processes for research improvement, experiment tracking, specialist market gating, infrastructure scaling recommendations, and periodic Master Specification coherence audits.
 
-### 2. EXTENSION PROTOCOL SUMMARY
-- **Market Settlement Definition Guard**: Required exact settlement definitions to be documented prior to registering new markets (`MarketFeatureExtensionManager.register_new_market`).
-- **Feature Validation**: Enforced availability ratio (>=0.80) and usefulness/importance score (>0.05) thresholds while rejecting prohibited reputation/odds terms (`validate_and_approve_feature`).
-- **Data Source Provenance**: Verified domain provenance and non-gambling source compliance (`validate_and_approve_data_source`).
-- **Mandatory Backtest & Shadow Gates**: Enforced mandatory backtesting and paper trading shadow test completion prior to enabling new markets for live recommendations (`enable_market_for_live_recommendation`).
+### 2. EVOLUTION & GOVERNANCE SUMMARY
+- **Experiment Tracking**: Managed controlled ML/Feature experiments (`ProductEvolutionManager.register_experiment` & `complete_experiment`) with metrics (Log Loss & Brier improvement).
+- **Specialist Market Expansion Gating**: Enforced data density gates (minimum historical sample size and completeness ratios) before approving market expansion (`evaluate_specialist_market_expansion`).
+- **Infrastructure Scaling Recommendations**: Evaluated real-time request rates and DB capacity to recommend replica scaling and tier upgrades (`calculate_infrastructure_scaling`).
+- **Master Specification Coherence Audits**: Periodically executed full audits against constitution rules (zero reputation features, non-gambling inputs, NO_BET enforcement) to ensure long-term architectural adherence (`run_master_spec_coherence_audit`).
 
 ---
 
@@ -72,3 +72,4 @@ The Football AI Intelligence System has completed Stage 24 New Markets, Features
 - **Stage 22**: Implemented continuous evaluation & calibration engine (`ContinuousEvaluator` in `src/models/continuous_evaluator.py`), ingesting settled predictions post-match, calculating rolling calibration metrics (Log Loss, Brier score, ECE), detecting model/data drift, identifying weak markets, and flagging degraded models for manual engineering review (`tests/test_continuous_evaluator.py`). Status: **PASS**.
 - **Stage 23**: Implemented controlled model updates & evolution engine (`ControlledModelLifecycleManager` in `src/models/model_lifecycle.py`), enforcing mandatory lifecycle progression (`PROPOSE -> DEVELOP -> BACKTEST -> CALIBRATE -> SHADOW TEST -> REVIEW -> APPROVE -> DEPLOY`), baseline comparison gates, version tagging, and instant production rollbacks (`tests/test_model_lifecycle.py`). Status: **PASS**.
 - **Stage 24**: Implemented extension manager (`MarketFeatureExtensionManager` in `src/markets/extension_manager.py`), enforcing exact settlement definition documentation for new markets, validating feature availability/usefulness scores, testing data source provenance/non-gambling compliance, and requiring mandatory backtesting and shadow trading gates prior to live enablement (`tests/test_extension_manager.py`). Status: **PASS**.
+- **Stage 25**: Implemented product evolution engine (`ProductEvolutionManager` in `src/models/product_evolution.py`), tracking ML experiments, enforcing data density expansion gates, calculating usage-based infrastructure scaling recommendations, and periodically executing Master Specification coherence audits (`tests/test_product_evolution.py`). Status: **PASS**.
