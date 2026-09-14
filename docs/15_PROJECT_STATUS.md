@@ -16,8 +16,8 @@
 | Stage 9 | News, Context & Sentiment Engine | **PASS** | Complete |
 | Stage 10 | Risk, Confidence & No-Bet Engine | **PASS** | Complete |
 | Stage 11 | Backtesting Framework | **PASS** | Complete |
-| Stage 12 | Calibration Engine | NOT STARTED | Pending Stage Protocol |
-| Stage 13 | Calibration & System Monitoring | NOT STARTED | Pending Stage Protocol |
+| Stage 12 | Calibration & Model Improvement Engine | **PASS** | Complete |
+| Stage 13 | Final Reporting Engine | NOT STARTED | Pending Stage Protocol |
 | Stage 14 | System Monitoring | NOT STARTED | Pending Stage Protocol |
 
 ---
@@ -35,3 +35,4 @@
 - **Stage 9**: Implemented news, context & sentiment engine (`ContextSentimentAnalyzer`, `ContextSentimentReport`), separating facts from opinions/rumours (`ClaimType`), extracting context (injuries, rotation, congestion, motivation, tactics), linking evidence, and calculating secondary confidence modifiers (`src/sentiment/sentiment_analyzer.py`, `tests/test_sentiment_analyzer.py`). Status: **PASS**.
 - **Stage 10**: Implemented risk, confidence & no-bet engine (`RiskEngine`, `RiskEvaluation`), evaluating data validation states, source conflict indices, lineup availability thresholds, and model confidence/uncertainty to prevent forced selections and trigger `NO_BET / INSUFFICIENT EVIDENCE` decisions (`src/risk/risk_engine.py`, `tests/test_risk_engine.py`). Status: **PASS**.
 - **Stage 11**: Implemented time-aware backtesting framework (`TimeAwareBacktester`, `HistoricalMatchRecord`, `BacktestMetricReport`), evaluating historical performance without data leakage across Log Loss, Brier score, accuracy, calibration error, and abstention (No-Bet) rate (`src/backtesting/backtester.py`, `tests/test_backtesting.py`). Status: **PASS**.
+- **Stage 12**: Implemented calibration & model improvement engine (`ProbabilityCalibrator`, `TimeAwareDatasetSplitter`, `ModelVersionRegistry`), providing temperature scaling calibration, chronological dataset splitting, and model/feature/config/evaluation metric version tracking (`src/models/calibration.py`, `tests/test_calibration.py`). Status: **PASS**.
