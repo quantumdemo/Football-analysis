@@ -5,7 +5,7 @@
 | Stage Number | Stage Name | Status | Completion Date |
 |--------------|------------|--------|-----------------|
 | Stage 0 | Master Specification & Constitution | **PASS** | Complete |
-| Stage 1 | Match Input | NOT STARTED | Pending Stage Protocol |
+| Stage 1 | Architecture & Project Skeleton | **PASS** | Complete |
 | Stage 2 | Match Identification | NOT STARTED | Pending Stage Protocol |
 | Stage 3 | Web Research Ingestion | NOT STARTED | Pending Stage Protocol |
 | Stage 4 | Data Validation Engine | NOT STARTED | Pending Stage Protocol |
@@ -23,8 +23,5 @@
 ---
 
 ## CHANGELOG
-- Established Stage 0 Master Specification & System Constitution (`docs/00_MASTER_SPECIFICATION.md`).
-- Established 16 specification documents (`docs/00_MASTER_SPECIFICATION.md` through `docs/15_PROJECT_STATUS.md`).
-- Established market catalog `markets/Matches-market.md` and configuration `config/config.json`.
-- Validated directory structure and foundational contracts.
-- Completed Stage 0 evaluation protocol.
+- **Stage 0**: Established Master Specification constitution (`docs/00_MASTER_SPECIFICATION.md`), specification catalog (`docs/00` to `docs/15`), directory tree, `config/config.json`, and `markets/Matches-market.md`. Status: **PASS**.
+- **Stage 1**: Implemented modular system architecture, configuration loader (`src/config.py`), logging (`src/logging.py`), error hierarchy (`src/errors.py`), subpackage data contracts (`src/match/`, `src/research/`, `src/validation/`, `src/features/`, `src/models/`, `src/risk/`, `src/reporting/`), skeleton pipeline orchestrator (`src/pipeline.py`), and test suite (`tests/test_config.py`, `tests/test_contracts.py`, `tests/test_skeleton_pipeline.py`). Status: **PASS**.
