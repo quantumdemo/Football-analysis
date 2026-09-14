@@ -51,13 +51,13 @@ class ResearchEvidence:
 
 
 class ResearchCollector:
-    """Ingests and validates web research evidence strictly filtering out betting platforms and tipsters."""
+    """Ingests and validates web research evidence strictly flagging betting platforms and tipsters."""
 
     def __init__(self, min_reliability: float = 0.5):
         self.min_reliability = min_reliability
 
     def collect_evidence(self, raw_items: List[Dict[str, Any]]) -> List[ResearchEvidence]:
-        """Ingests raw evidence dictionaries, attributes metadata, and filters prohibited items."""
+        """Ingests raw evidence dictionaries and attributes metadata."""
         processed_items: List[ResearchEvidence] = []
 
         for item in raw_items:
@@ -90,8 +90,10 @@ class ResearchCollector:
                 category=category_str
             )
 
-            # Strict exclusion of gambling/odds/tipster picks
-            if not evidence.is_prohibited:
-                processed_items.append(evidence)
+            processed_items.append(evidence)
 
         return processed_items
+
+    def ingest_evidence(self, evidence_list: List[ResearchEvidence]) -> List[ResearchEvidence]:
+        """Filters out prohibited evidence originating from gambling/odds/tipster sources."""
+        return [it for it in evidence_list if not it.is_prohibited]

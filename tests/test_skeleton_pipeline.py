@@ -1,18 +1,23 @@
-"""Tests for pipeline skeleton orchestrator."""
+"""Tests for pipeline orchestrator."""
 
 import pytest
-from datetime import datetime, timezone
-from src.match.identifier import MatchIdentifier
-from src.pipeline import PipelineSkeleton
+from datetime import datetime, timezone, timedelta
+from src.pipeline import FootballAIPipeline
+from src.research.web_research import EvidenceCategory
 
 
-def test_pipeline_skeleton_run():
-    skeleton = PipelineSkeleton()
+def test_pipeline_run():
+    pipeline = FootballAIPipeline()
     now = datetime.now(timezone.utc)
-    match = MatchIdentifier("M100", "TEAM_HOME", "TEAM_AWAY", now, "Champions League")
+    match_input = {
+        "match_id": "M100",
+        "home_team": "TEAM_HOME",
+        "away_team": "TEAM_AWAY",
+        "competition": "Champions League",
+        "scheduled_time": (now + timedelta(hours=24)).isoformat()
+    }
 
-    report = skeleton.run_skeleton(match, [])
+    report = pipeline.process_match(match_input, [])
 
     assert report.match_id == "M100"
-    assert report.decision == "NO_BET"
-    assert report.report_data["stage"] == "Stage 1 Architecture Skeleton"
+    assert report.risk_and_nobet_assessment["decision"] == "NO_BET"

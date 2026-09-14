@@ -63,6 +63,8 @@ def test_reject_betting_odds_and_tipster_sources():
         }
     ]
 
-    collected = collector.collect_evidence(raw_data)
-    assert len(collected) == 1
-    assert collected[0].evidence_id == "ev_valid"
+    raw_collected = collector.collect_evidence(raw_data)
+    assert len(raw_collected) == 3
+    filtered = collector.ingest_evidence(raw_collected)
+    assert len(filtered) == 1
+    assert filtered[0].evidence_id == "ev_valid"
