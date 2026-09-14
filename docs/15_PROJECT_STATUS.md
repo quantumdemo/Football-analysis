@@ -14,7 +14,7 @@
 | Stage 7 | Market Mapping Engine | **PASS** | Complete |
 | Stage 8 | Specialist Markets Engine | **PASS** | Complete |
 | Stage 9 | News, Context & Sentiment Engine | **PASS** | Complete |
-| Stage 10 | Risk & No-Bet Engine | NOT STARTED | Pending Stage Protocol |
+| Stage 10 | Risk, Confidence & No-Bet Engine | **PASS** | Complete |
 | Stage 11 | Final Reporting | NOT STARTED | Pending Stage Protocol |
 | Stage 12 | Backtesting Framework | NOT STARTED | Pending Stage Protocol |
 | Stage 13 | Calibration Engine | NOT STARTED | Pending Stage Protocol |
@@ -33,3 +33,4 @@
 - **Stage 7**: Implemented market mapping engine (`MarketRegistry`, `MarketMapper`), parsing `markets/Matches-market.md` taxonomy, mapping probabilities onto selections (1X2, Double Chance, Draw No Bet, Over/Under Goals), defining settlement periods, and returning explicit unsupported market status without using bookmaker odds (`src/markets/market_mapper.py`, `tests/test_market_mapper.py`). Status: **PASS**.
 - **Stage 8**: Implemented specialist markets engine (`SpecialistMarketEngine`, `SpecialistMarketForecast`) with incremental category-by-category models: 1. Goals/BTTS, 2. Corners, 3. Cards/Bookings, 4. Offsides/Fouls, 5. Shots/SOT, 6. Player markets, 7. Goal timing, 8. Correct Score matrix, 9. Combination markets, 10. Half-by-Half markets (`src/markets/specialist_markets.py`, `tests/test_specialist_markets.py`). Status: **PASS**.
 - **Stage 9**: Implemented news, context & sentiment engine (`ContextSentimentAnalyzer`, `ContextSentimentReport`), separating facts from opinions/rumours (`ClaimType`), extracting context (injuries, rotation, congestion, motivation, tactics), linking evidence, and calculating secondary confidence modifiers (`src/sentiment/sentiment_analyzer.py`, `tests/test_sentiment_analyzer.py`). Status: **PASS**.
+- **Stage 10**: Implemented risk, confidence & no-bet engine (`RiskEngine`, `RiskEvaluation`), evaluating data validation states, source conflict indices, lineup availability thresholds, and model confidence/uncertainty to prevent forced selections and trigger `NO_BET / INSUFFICIENT EVIDENCE` decisions (`src/risk/risk_engine.py`, `tests/test_risk_engine.py`). Status: **PASS**.

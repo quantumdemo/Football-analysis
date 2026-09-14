@@ -9,7 +9,7 @@ from src.research.web_research import ResearchEvidence
 from src.validation.validator import ValidationReport, EvidenceValidationState
 from src.features.feature_engine import FeatureEngine, MatchFeatureSet
 from src.models.forecast import ForecastModel, ForecastDistribution
-from src.risk.risk_engine import RiskEvaluation
+from src.risk.risk_engine import RiskEngine, RiskEvaluation
 from src.reporting.report_generator import MatchReport
 
 
@@ -21,6 +21,7 @@ class PipelineSkeleton:
         self.logger = setup_logger("PipelineSkeleton")
         self.feature_engine = FeatureEngine()
         self.forecast_model = ForecastModel()
+        self.risk_engine = RiskEngine()
         self.logger.info("Pipeline skeleton initialized successfully.")
 
     def run_skeleton(
@@ -48,11 +49,11 @@ class PipelineSkeleton:
 
         forecast = self.forecast_model.predict(features)
 
-        risk = RiskEvaluation(
+        risk = self.risk_engine.evaluate(
             match_id=match.match_id,
-            decision="NO_BET",
-            reason="Stage 1 Skeleton - Advanced Forecasting Not Implemented",
-            confidence_score=0.5
+            validation_report=validation,
+            feature_set=features,
+            forecast=forecast
         )
 
         report_data = {
