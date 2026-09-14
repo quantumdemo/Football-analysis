@@ -26,19 +26,20 @@
 | Stage 19 | Private Beta Release Engine | **PASS** | Complete |
 | Stage 20 | Public Launch (v1.0.0 Production Release) | **PASS** | Complete |
 | Stage 21 | Live Monitoring & Incident Response | **PASS** | Complete |
-| Stage 22 | Controlled Evolution | NOT STARTED | Pending Stage Protocol |
+| Stage 22 | Continuous Evaluation & Calibration | **PASS** | Complete |
+| Stage 23 | Controlled Evolution | NOT STARTED | Pending Stage Protocol |
 
 ---
 
-## STAGE 21 LIVE MONITORING & INCIDENT RESPONSE REPORT
+## STAGE 22 CONTINUOUS EVALUATION REPORT
 
 ### 1. OVERALL STATUS: PASS
-The Football AI Intelligence System has completed Stage 21 Live Monitoring & Incident Response, implementing real-time health monitoring, incident severity classification (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), automated threshold alerts, and production changelog enforcement.
+The Football AI Intelligence System has completed Stage 22 Continuous Evaluation & Calibration, converting settled predictions post-match into evaluation data, calculating rolling calibration metrics (Log Loss, Brier score, ECE), detecting model/data drift, and flagging degraded models for manual engineering review instead of auto-rewriting logic.
 
-### 2. MONITORING SUMMARY
-- **Health Metrics Monitored**: Uptime, latency (ms), error rates, scheduled job failure rates, stale-data rates (>20% threshold), database capacity, query latency, abnormal model probability distributions, and live calibration drift.
-- **Incident Severity Levels**: Defined response procedures for Critical, High, Medium, and Low incidents.
-- **Production Changelog Guard**: Enforced `SystemHealthMonitor.log_production_change` to ensure zero silent modifications to models, features, or market definitions.
+### 2. CONTINUOUS EVALUATION SUMMARY
+- **Post-Match Data Ingestion**: Converted live settled paper trading predictions into continuous evaluation data via `ContinuousEvaluator.ingest_settled_prediction`.
+- **Rolling Metric Tracking**: Calculated rolling Log Loss, Brier score, and ECE over sliding window sizes.
+- **Drift Detection & Manual Review Guard**: Implemented `evaluate_model_drift` to compare rolling metrics against approved baselines, identify weak market families, and flag degraded models for manual engineering review rather than silent automatic code rewrites.
 
 ---
 
@@ -65,3 +66,4 @@ The Football AI Intelligence System has completed Stage 21 Live Monitoring & Inc
 - **Stage 19**: Implemented private beta release manager (`PrivateBetaManager` in `src/reporting/beta_manager.py`), testing end-to-end user journeys under realistic traffic, verifying safety assertions (data outages/failures never produce fabricated predictions), and collecting structured user feedback (`tests/test_beta_manager.py`). Status: **PASS**.
 - **Stage 20**: Implemented public launch manager (`PublicLaunchManager` in `src/data/launch.py`), executing post-deployment smoke tests, verifying Supabase connectivity, live research collection, forecasting & NO_BET safety, tagging release as **v1.0.0**, publishing public disclaimers, and unit tests (`tests/test_public_launch.py`). Status: **PASS**.
 - **Stage 21**: Implemented live monitoring & incident response engine (`SystemHealthMonitor` in `src/reporting/monitoring.py`), monitoring metrics (uptime, latency, error rate, job failures, stale data rates, db capacity, abnormal distributions), classifying incident severity levels (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), and maintaining production changelogs (`tests/test_monitoring.py`). Status: **PASS**.
+- **Stage 22**: Implemented continuous evaluation & calibration engine (`ContinuousEvaluator` in `src/models/continuous_evaluator.py`), ingesting settled predictions post-match, calculating rolling calibration metrics (Log Loss, Brier score, ECE), detecting model/data drift, identifying weak markets, and flagging degraded models for manual engineering review (`tests/test_continuous_evaluator.py`). Status: **PASS**.
