@@ -20,22 +20,22 @@
 | Stage 13 | Final Reporting Engine | **PASS** | Complete |
 | Stage 14 | Final Integration & Release Readiness | **PASS** | Complete |
 | Stage 15 | Full System Audit | **PASS** | Complete |
-| Stage 16 | Historical Validation | NOT STARTED | Pending Stage Protocol |
+| Stage 16 | Historical Validation & Backtesting | **PASS** | Complete |
 | Stage 17 | Shadow Test | NOT STARTED | Pending Stage Protocol |
 | Stage 18 | Production Database Setup | NOT STARTED | Pending Stage Protocol |
 
 ---
 
-## STAGE 15 SYSTEM AUDIT REPORT
+## STAGE 16 HISTORICAL VALIDATION REPORT
 
-### 1. AUDIT OVERALL STATUS: PASS
-The Football AI Intelligence System has completed the Stage 15 Full System Audit with zero critical findings.
+### 1. OVERALL STATUS: PASS
+The Football AI Intelligence System has completed Stage 16 Historical Validation & Backtesting, evaluating multi-market performance without future data leakage.
 
-### 2. AUDIT SUMMARY
-- **Prohibited Gambling/Odds Keywords Filter**: **PASS** (Filtered by `ResearchCollector`)
-- **Zero Reputation/Prestige/Odds Features**: **PASS** (`MatchFeatureSet` contains 100% objective metrics)
-- **Pipeline Forecast Deterministic Reproducibility**: **PASS** (Identical inputs yield 100% identical outputs)
-- **Source Control Security & Secret Check**: **PASS** (Zero hardcoded credentials or database keys found in `src/`)
+### 2. PERFORMANCE BREAKDOWN SUMMARY
+- **Temporal Anti-Leakage Enforced**: All predictions use strictly pre-kickoff evidence (`published_at <= scheduled_time`).
+- **Supported Market Families Evaluated**: 1X2, Goals (Over/Under 2.5), BTTS, Corners, Cards, Offsides, and Player props.
+- **Metric Breakdowns**: Generated performance breakdowns by competition, market family, and data-availability level.
+- **Abstention Behavior Verified**: `NO_BET` abstention triggers consistently when research evidence is missing or conflicting.
 
 ---
 
@@ -56,3 +56,4 @@ The Football AI Intelligence System has completed the Stage 15 Full System Audit
 - **Stage 13**: Implemented final reporting engine (`ReportGenerator`, `AuditableMatchReport`), compiling auditable match reports containing verification, evidence summary, objective statistics, context/sentiment, probabilities with disclaimers, mapped markets, risk/NO_BET evaluation, and model versioning (`src/reporting/report_generator.py`). Status: **PASS**.
 - **Stage 14**: Connected all 14 stages into full end-to-end pipeline (`FootballAIPipeline` in `src/pipeline.py`), passed comprehensive integration, regression, failure-mode, and release readiness test suite (`tests/test_integration_and_release.py`), and produced release readiness report. Status: **PASS**.
 - **Stage 15**: Implemented full system auditor (`SystemAuditor` in `src/audit/system_audit.py`) and specification (`docs/16_STAGE15_AUDIT_SPEC.md`). Verified 100% compliance with master rules, zero critical findings, deterministic output reproducibility, and source control security (`tests/test_system_audit.py`). Status: **PASS**.
+- **Stage 16**: Implemented multi-market historical validation engine (`HistoricalValidationEngine` in `src/backtesting/historical_validator.py`), evaluating performance chronologically across market families, measuring calibration/Brier/log loss/abstention, and breaking down results by competition, market family, and data availability (`tests/test_historical_validation.py`). Status: **PASS**.
