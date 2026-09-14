@@ -121,7 +121,7 @@ FOOTBALL_AI_SYSTEM/
 ├── DATABASE.md                      # Database schema & RLS documentation
 ├── DEPLOYMENT.md                    # Production deployment guide
 ├── OPERATIONS.md                    # Operations manual & incident protocol
-├── vercel.json                      # Vercel routing & Vercel Cron configuration
+├── vercel.json                      # Vercel routing configuration
 └── README.md                        # Master project documentation
 ```
 
@@ -129,14 +129,14 @@ FOOTBALL_AI_SYSTEM/
 
 ## 4. VERCEL DEPLOYMENT & SERVERLESS ENDPOINTS
 
-The repository is fully configured for Vercel deployment with `@vercel/python` serverless functions and static dashboard routing.
+The repository is configured for Vercel deployment with `@vercel/python` serverless functions and static dashboard routing.
 
 ### Serverless API Routes
 - `GET  /` -> `public/index.html` (System Status Dashboard)
 - `GET  /api/health` -> Returns operational metrics and system status.
 - `GET  /api/status` -> Returns stage completion matrix (Stages 0–25 PASS).
 - `POST /api/predict` -> Executes pre-match prediction pipeline.
-- `POST /api/cleanup` -> Executes automated 6-hour research cache cleanup (Vercel Cron).
+- `POST /api/cleanup` -> Executes automated 6-hour research cache cleanup (Manual/External HTTP trigger).
 
 ---
 
