@@ -16,11 +16,14 @@ class MockSocket:
         elif 'w' in mode:
             return self.wfile
 
+    def sendall(self, data):
+        self.wfile.write(data)
+
 
 def test_api_health_get():
     request = b"GET /api/health HTTP/1.1\r\nHost: localhost\r\n\r\n"
     sock = MockSocket(request)
-    h = handler(sock.rfile, ("127.0.0.1", 8000), None)
+    h = handler(sock, ("127.0.0.1", 8000), None)
     sock.wfile.seek(0)
     response_text = sock.wfile.read().decode("utf-8")
 
@@ -32,7 +35,7 @@ def test_api_health_get():
 def test_api_status_get():
     request = b"GET /api/status HTTP/1.1\r\nHost: localhost\r\n\r\n"
     sock = MockSocket(request)
-    h = handler(sock.rfile, ("127.0.0.1", 8000), None)
+    h = handler(sock, ("127.0.0.1", 8000), None)
     sock.wfile.seek(0)
     response_text = sock.wfile.read().decode("utf-8")
 
@@ -56,7 +59,7 @@ def test_api_predict_post():
     headers = f"POST /api/predict HTTP/1.1\r\nHost: localhost\r\nContent-Length: {len(payload)}\r\n\r\n".encode("utf-8")
     request = headers + payload
     sock = MockSocket(request)
-    h = handler(sock.rfile, ("127.0.0.1", 8000), None)
+    h = handler(sock, ("127.0.0.1", 8000), None)
     sock.wfile.seek(0)
     response_text = sock.wfile.read().decode("utf-8")
 
@@ -69,7 +72,7 @@ def test_api_cleanup_post():
     headers = f"POST /api/cleanup HTTP/1.1\r\nHost: localhost\r\nContent-Length: {len(payload)}\r\n\r\n".encode("utf-8")
     request = headers + payload
     sock = MockSocket(request)
-    h = handler(sock.rfile, ("127.0.0.1", 8000), None)
+    h = handler(sock, ("127.0.0.1", 8000), None)
     sock.wfile.seek(0)
     response_text = sock.wfile.read().decode("utf-8")
 

@@ -12,7 +12,7 @@ from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime, timezone
 from src.pipeline import FootballAIPipeline
-from src.reporting.monitoring import SystemHealthMonitor
+from src.reporting.monitoring import SystemHealthMonitor, SystemHealthMetrics
 from src.data.scheduler import ScheduledJobRunner
 
 
@@ -69,20 +69,31 @@ class handler(BaseHTTPRequestHandler):
         if path in ("/api/health", "/api/health/"):
             try:
                 monitor = get_monitor()
-                health = monitor.record_health_check(
-                    uptime_pct=99.9,
-                    p95_latency_ms=120.0,
-                    error_rate_pct=0.0,
-                    job_failure_rate_pct=0.0,
-                    stale_data_rate_pct=1.2,
-                    db_capacity_pct=25.0
+                metrics = SystemHealthMetrics(
+                    uptime_percentage=99.9,
+                    avg_latency_ms=120.0,
+                    error_rate_percentage=0.0,
+                    job_failure_rate_percentage=0.0,
+                    stale_data_rate_percentage=1.2,
+                    db_capacity_usage_percentage=25.0,
+                    db_query_latency_ms=15.0,
+                    abnormal_distribution_incidents=0,
+                    active_incidents_count=0
                 )
+                eval_res = monitor.evaluate_system_health(metrics)
                 self._send_json(200, {
-                    "status": health.status,
+                    "status": eval_res["health_status"],
                     "version": "1.0.0",
-                    "timestamp": health.timestamp.isoformat(),
-                    "metrics": health.metrics,
-                    "active_alerts": health.active_alerts
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "active_incidents": eval_res["active_incidents"],
+                    "metrics": {
+                        "uptime_pct": metrics.uptime_percentage,
+                        "avg_latency_ms": metrics.avg_latency_ms,
+                        "error_rate_pct": metrics.error_rate_percentage,
+                        "job_failure_rate_pct": metrics.job_failure_rate_percentage,
+                        "stale_data_rate_pct": metrics.stale_data_rate_percentage,
+                        "db_capacity_pct": metrics.db_capacity_usage_percentage
+                    }
                 })
             except Exception as e:
                 self._send_json(500, {"error": f"Health check failed: {str(e)}"})

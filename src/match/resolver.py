@@ -11,9 +11,9 @@ class MatchResolver:
 
     def resolve(self, raw_input: Dict[str, Any]) -> MatchIdentifier:
         """Parses and verifies raw match input, stopping if identity cannot be verified."""
-        match_id = str(raw_input.get("match_id", "")).strip()
-        home_team = str(raw_input.get("home_team", "")).strip()
-        away_team = str(raw_input.get("away_team", "")).strip()
+        home_team = str(raw_input.get("home_team") or raw_input.get("home_team_id") or "").strip()
+        away_team = str(raw_input.get("away_team") or raw_input.get("away_team_id") or "").strip()
+        match_id = str(raw_input.get("match_id", "")).strip() or f"M_{home_team}_{away_team}"
         competition = str(raw_input.get("competition", "")).strip()
         venue = str(raw_input.get("venue", "Unknown Venue")).strip()
         season = str(raw_input.get("season", "Current Season")).strip()
