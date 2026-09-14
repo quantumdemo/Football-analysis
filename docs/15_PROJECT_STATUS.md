@@ -28,21 +28,21 @@
 | Stage 21 | Live Monitoring & Incident Response | **PASS** | Complete |
 | Stage 22 | Continuous Evaluation & Calibration | **PASS** | Complete |
 | Stage 23 | Controlled Model Updates & Evolution | **PASS** | Complete |
-| Stage 24 | Governance & Compliance | NOT STARTED | Pending Stage Protocol |
+| Stage 24 | New Markets, Features & Data Sources | **PASS** | Complete |
 | Stage 25 | System Completion | NOT STARTED | Pending Stage Protocol |
 
 ---
 
-## STAGE 23 CONTROLLED MODEL UPDATES REPORT
+## STAGE 24 EXTENSION PROTOCOL REPORT
 
 ### 1. OVERALL STATUS: PASS
-The Football AI Intelligence System has completed Stage 23 Controlled Model Updates & Evolution, enforcing mandatory model evolution lifecycles, preventing automated silent code modifications, requiring peer reviews, and supporting instant production rollbacks.
+The Football AI Intelligence System has completed Stage 24 New Markets, Features & Data Sources, establishing strict onboarding protocols for adding new markets, features, and research evidence sources.
 
-### 2. CONTROLLED EVOLUTION SUMMARY
-- **Mandatory Lifecycle Enforced**: `PROPOSE → DEVELOP → BACKTEST → CALIBRATE → SHADOW TEST → REVIEW → APPROVE → DEPLOY → MONITOR`.
-- **Validation Gates**: Automatic rejection of candidate model proposals failing log loss or shadow trading gates.
-- **Rollback Capability**: `ControlledModelLifecycleManager.rollback_production_model` enables instant rollback to previous active production versions.
-- **Controlled Review Guard**: Automated AI systems/agents are strictly prohibited from directly modifying production predictive logic without controlled human/peer review.
+### 2. EXTENSION PROTOCOL SUMMARY
+- **Market Settlement Definition Guard**: Required exact settlement definitions to be documented prior to registering new markets (`MarketFeatureExtensionManager.register_new_market`).
+- **Feature Validation**: Enforced availability ratio (>=0.80) and usefulness/importance score (>0.05) thresholds while rejecting prohibited reputation/odds terms (`validate_and_approve_feature`).
+- **Data Source Provenance**: Verified domain provenance and non-gambling source compliance (`validate_and_approve_data_source`).
+- **Mandatory Backtest & Shadow Gates**: Enforced mandatory backtesting and paper trading shadow test completion prior to enabling new markets for live recommendations (`enable_market_for_live_recommendation`).
 
 ---
 
@@ -71,3 +71,4 @@ The Football AI Intelligence System has completed Stage 23 Controlled Model Upda
 - **Stage 21**: Implemented live monitoring & incident response engine (`SystemHealthMonitor` in `src/reporting/monitoring.py`), monitoring metrics (uptime, latency, error rate, job failures, stale data rates, db capacity, abnormal distributions), classifying incident severity levels (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), and maintaining production changelogs (`tests/test_monitoring.py`). Status: **PASS**.
 - **Stage 22**: Implemented continuous evaluation & calibration engine (`ContinuousEvaluator` in `src/models/continuous_evaluator.py`), ingesting settled predictions post-match, calculating rolling calibration metrics (Log Loss, Brier score, ECE), detecting model/data drift, identifying weak markets, and flagging degraded models for manual engineering review (`tests/test_continuous_evaluator.py`). Status: **PASS**.
 - **Stage 23**: Implemented controlled model updates & evolution engine (`ControlledModelLifecycleManager` in `src/models/model_lifecycle.py`), enforcing mandatory lifecycle progression (`PROPOSE -> DEVELOP -> BACKTEST -> CALIBRATE -> SHADOW TEST -> REVIEW -> APPROVE -> DEPLOY`), baseline comparison gates, version tagging, and instant production rollbacks (`tests/test_model_lifecycle.py`). Status: **PASS**.
+- **Stage 24**: Implemented extension manager (`MarketFeatureExtensionManager` in `src/markets/extension_manager.py`), enforcing exact settlement definition documentation for new markets, validating feature availability/usefulness scores, testing data source provenance/non-gambling compliance, and requiring mandatory backtesting and shadow trading gates prior to live enablement (`tests/test_extension_manager.py`). Status: **PASS**.

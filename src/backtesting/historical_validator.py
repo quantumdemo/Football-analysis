@@ -84,26 +84,25 @@ class HistoricalValidationEngine:
 
         log_loss_sum = 0.0
         brier_sum = 0.0
-        correct_count = 0
 
         failure_modes: List[FailureModeRecord] = []
         comp_stats: Dict[str, Dict[str, float]] = {}
         market_family_stats: Dict[str, Dict[str, float]] = {
-            "1X2": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0},
-            "Goals_OU": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0},
-            "BTTS": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0},
-            "Corners": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0},
-            "Cards": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0}
+            "1X2": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0},
+            "Goals_OU": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0},
+            "BTTS": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0},
+            "Corners": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0},
+            "Cards": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0}
         }
         availability_stats: Dict[str, Dict[str, float]] = {
-            "HIGH_AVAILABILITY": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0},
-            "LOW_AVAILABILITY": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0}
+            "HIGH_AVAILABILITY": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0},
+            "LOW_AVAILABILITY": {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0}
         }
 
         for record in test_records:
             comp = record.match.competition
             if comp not in comp_stats:
-                comp_stats[comp] = {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0}
+                comp_stats[comp] = {"log_loss": 0.0, "brier": 0.0, "count": 0, "no_bet": 0, "correct": 0}
 
             # Prepare raw inputs
             raw_match_input = {
@@ -150,6 +149,10 @@ class HistoricalValidationEngine:
             probs = report.probabilistic_forecast["outcome_1x2_probabilities"]
             p_actual = max(1e-5, probs.get("home_win" if actual == "HOME" else ("draw" if actual == "DRAW" else "away_win"), 0.33333))
 
+            predicted_winner = max(probs, key=probs.get)
+            actual_key = "home_win" if actual == "HOME" else ("draw" if actual == "DRAW" else "away_win")
+            is_correct = 1.0 if predicted_winner == actual_key else 0.0
+
             match_log_loss = -math.log(p_actual)
             y_h = 1.0 if actual == "HOME" else 0.0
             y_d = 1.0 if actual == "DRAW" else 0.0
@@ -163,15 +166,18 @@ class HistoricalValidationEngine:
             comp_stats[comp]["count"] += 1
             comp_stats[comp]["log_loss"] += match_log_loss
             comp_stats[comp]["brier"] += match_brier
+            comp_stats[comp]["correct"] += is_correct
 
             availability_stats[avail_key]["count"] += 1
             availability_stats[avail_key]["log_loss"] += match_log_loss
             availability_stats[avail_key]["brier"] += match_brier
+            availability_stats[avail_key]["correct"] += is_correct
 
             for mf in market_family_stats:
                 market_family_stats[mf]["count"] += 1
                 market_family_stats[mf]["log_loss"] += match_log_loss
                 market_family_stats[mf]["brier"] += match_brier
+                market_family_stats[mf]["correct"] += is_correct
 
             # Failure mode detection (e.g. high log loss outliers)
             if match_log_loss > 1.5:
@@ -195,7 +201,7 @@ class HistoricalValidationEngine:
                 abstention_rate=round(v["no_bet"] / max(1, v["count"] + v["no_bet"]), 4),
                 log_loss=round(v["log_loss"] / max(1, v["count"]), 4),
                 brier_score=round(v["brier"] / max(1, v["count"]), 4),
-                accuracy=0.70
+                accuracy=round(v["correct"] / max(1, v["count"]), 4)
             ) for k, v in comp_stats.items()
         }
 
@@ -207,7 +213,7 @@ class HistoricalValidationEngine:
                 abstention_rate=round(v["no_bet"] / max(1, v["count"] + v["no_bet"]), 4),
                 log_loss=round(v["log_loss"] / max(1, v["count"]), 4),
                 brier_score=round(v["brier"] / max(1, v["count"]), 4),
-                accuracy=0.70
+                accuracy=round(v["correct"] / max(1, v["count"]), 4)
             ) for k, v in market_family_stats.items()
         }
 
@@ -219,7 +225,7 @@ class HistoricalValidationEngine:
                 abstention_rate=round(v["no_bet"] / max(1, v["count"] + v["no_bet"]), 4),
                 log_loss=round(v["log_loss"] / max(1, v["count"]), 4),
                 brier_score=round(v["brier"] / max(1, v["count"]), 4),
-                accuracy=0.70
+                accuracy=round(v["correct"] / max(1, v["count"]), 4)
             ) for k, v in availability_stats.items()
         }
 
