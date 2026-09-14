@@ -22,19 +22,20 @@
 | Stage 15 | Full System Audit | **PASS** | Complete |
 | Stage 16 | Historical Validation & Backtesting | **PASS** | Complete |
 | Stage 17 | Shadow / Paper Trading Engine | **PASS** | Complete |
-| Stage 18 | Production Database Setup | NOT STARTED | Pending Stage Protocol |
+| Stage 18 | Production Infrastructure & Database | **PASS** | Complete |
 
 ---
 
-## STAGE 17 SHADOW TRADING REPORT
+## STAGE 18 PRODUCTION INFRASTRUCTURE REPORT
 
 ### 1. OVERALL STATUS: PASS
-The Football AI Intelligence System has completed Stage 17 Shadow / Paper Trading, running paper trading without financial execution, logging immutable pre-kickoff prediction records, settling post-match without retroactive alterations, and evaluating stability and calibration gates.
+The Football AI Intelligence System has completed Stage 18 Production Infrastructure & Database, finalizing Supabase (PostgreSQL) as the production backend, creating decoupled repository interfaces, and implementing scheduled jobs, rate limiting, and database recovery hooks.
 
-### 2. SHADOW TRADING SUMMARY
-- **Immutability Guard Enforced**: Paper predictions logged pre-kickoff cannot be retroactively altered (`ValidationError` raised on duplicate prediction attempts).
-- **Recorded Fields**: Prediction ID, prediction timestamp, kickoff time, evidence count, model/feature version, 1X2 probabilities, expected goals, candidate markets, and NO_BET decisions.
-- **Gate Monitoring**: Evaluated stability (data outages & stale sources) and calibration (Log Loss & Brier score) gates.
+### 2. INFRASTRUCTURE & SCHEMA SUMMARY
+- **Finalized Database**: Supabase (PostgreSQL) selected for relational SQL analytics across matches, features, forecasts, mapped markets, outcomes, and audit logs.
+- **Data Access Layer**: Decoupled via `ProductionDatabaseRepository` in `src/data/database.py`.
+- **Scheduled Jobs**: Implemented via `ScheduledJobRunner` in `src/data/scheduler.py` managing pre-match predictions, feature refreshes, and rate limiting (60 req/min).
+- **Security & Backup**: Secrets managed via environment variables; point-in-time recovery and snapshot restore hooks verified.
 
 ---
 
@@ -57,3 +58,4 @@ The Football AI Intelligence System has completed Stage 17 Shadow / Paper Tradin
 - **Stage 15**: Implemented full system auditor (`SystemAuditor` in `src/audit/system_audit.py`) and specification (`docs/16_STAGE15_AUDIT_SPEC.md`). Verified 100% compliance with master rules, zero critical findings, deterministic output reproducibility, and source control security (`tests/test_system_audit.py`). Status: **PASS**.
 - **Stage 16**: Implemented multi-market historical validation engine (`HistoricalValidationEngine` in `src/backtesting/historical_validator.py`), evaluating performance chronologically across market families, measuring calibration/Brier/log loss/abstention, and breaking down results by competition, market family, and data availability (`tests/test_historical_validation.py`). Status: **PASS**.
 - **Stage 17**: Implemented shadow paper trading engine (`ShadowTradingEngine` in `src/backtesting/shadow_trader.py`), recording immutable pre-kickoff prediction records (`ShadowPredictionRecord`), settling predictions post-match without retroactive alterations, and evaluating stability and calibration gates (`tests/test_shadow_trader.py`). Status: **PASS**.
+- **Stage 18**: Finalized Supabase PostgreSQL as production backend, created production infrastructure specification (`docs/17_STAGE18_INFRASTRUCTURE_SPEC.md`), decoupled database repository (`ProductionDatabaseRepository` in `src/data/database.py`), scheduled job runner with rate limiting (`ScheduledJobRunner` in `src/data/scheduler.py`), and unit tests (`tests/test_production_infrastructure.py`). Status: **PASS**.
