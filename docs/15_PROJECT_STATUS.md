@@ -15,9 +15,9 @@
 | Stage 8 | Specialist Markets Engine | **PASS** | Complete |
 | Stage 9 | News, Context & Sentiment Engine | **PASS** | Complete |
 | Stage 10 | Risk, Confidence & No-Bet Engine | **PASS** | Complete |
-| Stage 11 | Final Reporting | NOT STARTED | Pending Stage Protocol |
-| Stage 12 | Backtesting Framework | NOT STARTED | Pending Stage Protocol |
-| Stage 13 | Calibration Engine | NOT STARTED | Pending Stage Protocol |
+| Stage 11 | Backtesting Framework | **PASS** | Complete |
+| Stage 12 | Calibration Engine | NOT STARTED | Pending Stage Protocol |
+| Stage 13 | Calibration & System Monitoring | NOT STARTED | Pending Stage Protocol |
 | Stage 14 | System Monitoring | NOT STARTED | Pending Stage Protocol |
 
 ---
@@ -34,3 +34,4 @@
 - **Stage 8**: Implemented specialist markets engine (`SpecialistMarketEngine`, `SpecialistMarketForecast`) with incremental category-by-category models: 1. Goals/BTTS, 2. Corners, 3. Cards/Bookings, 4. Offsides/Fouls, 5. Shots/SOT, 6. Player markets, 7. Goal timing, 8. Correct Score matrix, 9. Combination markets, 10. Half-by-Half markets (`src/markets/specialist_markets.py`, `tests/test_specialist_markets.py`). Status: **PASS**.
 - **Stage 9**: Implemented news, context & sentiment engine (`ContextSentimentAnalyzer`, `ContextSentimentReport`), separating facts from opinions/rumours (`ClaimType`), extracting context (injuries, rotation, congestion, motivation, tactics), linking evidence, and calculating secondary confidence modifiers (`src/sentiment/sentiment_analyzer.py`, `tests/test_sentiment_analyzer.py`). Status: **PASS**.
 - **Stage 10**: Implemented risk, confidence & no-bet engine (`RiskEngine`, `RiskEvaluation`), evaluating data validation states, source conflict indices, lineup availability thresholds, and model confidence/uncertainty to prevent forced selections and trigger `NO_BET / INSUFFICIENT EVIDENCE` decisions (`src/risk/risk_engine.py`, `tests/test_risk_engine.py`). Status: **PASS**.
+- **Stage 11**: Implemented time-aware backtesting framework (`TimeAwareBacktester`, `HistoricalMatchRecord`, `BacktestMetricReport`), evaluating historical performance without data leakage across Log Loss, Brier score, accuracy, calibration error, and abstention (No-Bet) rate (`src/backtesting/backtester.py`, `tests/test_backtesting.py`). Status: **PASS**.
