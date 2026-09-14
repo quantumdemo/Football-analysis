@@ -21,7 +21,7 @@ def test_match_identifier_identical_teams():
 
 def test_forecast_distribution_sum_validation():
     with pytest.raises(ValueError):
-        ForecastDistribution("M1", 0.5, 0.5, 0.5, 0.8)
+        ForecastDistribution("M1", 0.5, 0.5, 0.5, 1.5, 1.0, 0.6, 0.4, 0.8, 0.2)
 
 
 def test_prohibited_research_keyword():

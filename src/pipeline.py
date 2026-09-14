@@ -8,7 +8,7 @@ from src.match.identifier import MatchIdentifier
 from src.research.web_research import ResearchEvidence
 from src.validation.validator import ValidationReport, EvidenceValidationState
 from src.features.feature_engine import FeatureEngine, MatchFeatureSet
-from src.models.forecast import ForecastDistribution
+from src.models.forecast import ForecastModel, ForecastDistribution
 from src.risk.risk_engine import RiskEvaluation
 from src.reporting.report_generator import MatchReport
 
@@ -20,6 +20,7 @@ class PipelineSkeleton:
         self.config = SystemConfig.load_from_file(config_path)
         self.logger = setup_logger("PipelineSkeleton")
         self.feature_engine = FeatureEngine()
+        self.forecast_model = ForecastModel()
         self.logger.info("Pipeline skeleton initialized successfully.")
 
     def run_skeleton(
@@ -45,13 +46,7 @@ class PipelineSkeleton:
             validation_report=validation
         )
 
-        forecast = ForecastDistribution(
-            match_id=match.match_id,
-            p_home_win=0.33333,
-            p_draw=0.33334,
-            p_away_win=0.33333,
-            model_confidence=0.5
-        )
+        forecast = self.forecast_model.predict(features)
 
         risk = RiskEvaluation(
             match_id=match.match_id,
