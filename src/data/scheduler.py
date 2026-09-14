@@ -7,10 +7,11 @@ from typing import List, Dict, Any, Optional
 from src.errors import ValidationError
 from src.pipeline import FootballAIPipeline
 from src.data.database import ProductionDatabaseRepository
+from src.data.retention import RetentionJobLog
 
 
 class ScheduledJobRunner:
-    """Manages scheduled production jobs (research, feature refresh, prediction, post-match settlement)."""
+    """Manages scheduled production jobs (research, feature refresh, prediction, 6-hour research cleanup)."""
 
     def __init__(self, db_repo: Optional[ProductionDatabaseRepository] = None, max_requests_per_min: int = 60):
         self.pipeline = FootballAIPipeline()
@@ -52,3 +53,21 @@ class ScheduledJobRunner:
         self.db.save_prediction(report)
 
         return report.to_dict()
+
+    def run_6hour_research_cleanup_job(self, dry_run: bool = False) -> List[RetentionJobLog]:
+        """Runs scheduled 6-hour database research retention cleanup across temporary research tables."""
+        self._check_rate_limit()
+
+        temp_tables = [
+            "research_cache",
+            "web_research_raw",
+            "temporary_feature_cache",
+            "temporary_research_sessions"
+        ]
+
+        logs: List[RetentionJobLog] = []
+        for table in temp_tables:
+            log = self.db.purge_expired_research_cache(table_name=table, dry_run=dry_run)
+            logs.append(log)
+
+        return logs
