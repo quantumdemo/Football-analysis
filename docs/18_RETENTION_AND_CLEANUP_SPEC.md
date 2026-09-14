@@ -69,9 +69,12 @@ AUTOMATED 6-HOUR CLEANUP PURGES EXPIRED RESEARCH CACHE
 ### Supabase Implementation
 - Uses PostgreSQL `pg_cron` extension scheduled as:
   ```sql
+  -- Ensure pg_cron extension is enabled first in Supabase (Database -> Extensions or SQL)
+  CREATE EXTENSION IF NOT EXISTS pg_cron;
+
   SELECT cron.schedule(
     '0 */6 * * *',
-    $$ SELECT execute_6hour_research_cleanup(); $$
+    $$ DELETE FROM research_cache WHERE expires_at <= NOW() AND is_active = FALSE AND retention_required = FALSE; $$
   );
   ```
 - Executes server-side stored procedure using `SECURITY DEFINER` with service-role permissions.

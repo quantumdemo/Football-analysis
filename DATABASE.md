@@ -117,7 +117,17 @@ CREATE POLICY "Service Role Cache Cleanup" ON research_cache FOR ALL USING (auth
 
 ## 5. AUTOMATED 6-HOUR CLEANUP MECHANISM
 
-The 6-hour research cache cleanup runs automatically on the server using PostgreSQL `pg_cron` or the Python `ScheduledJobRunner`:
+### Supabase `pg_cron` Extension Requirement
+To run `cron.schedule(...)` in Supabase without triggering `ERROR: 3F000: schema "cron" does not exist`, you must enable the `pg_cron` extension first:
+
+1. **Option A (Supabase Dashboard)**: Navigate to **Database -> Extensions**, search for `pg_cron`, and click **Enable**.
+2. **Option B (SQL Editor)**: Execute:
+   ```sql
+   -- Enable pg_cron extension in Supabase
+   CREATE EXTENSION IF NOT EXISTS pg_cron;
+   ```
+
+After enabling the extension, schedule the 6-hour cleanup job in the Supabase SQL Editor:
 
 ```sql
 -- PostgreSQL pg_cron Schedule (Supabase)
@@ -125,6 +135,15 @@ SELECT cron.schedule(
     '0 */6 * * *',
     $$ DELETE FROM research_cache WHERE expires_at <= NOW() AND is_active = FALSE AND retention_required = FALSE; $$
 );
+```
+
+### Fallback Option (Python Background Scheduler)
+If `pg_cron` is unavailable on your Supabase plan, run `ScheduledJobRunner` via Python background service or cron job:
+```python
+from src.data.scheduler import ScheduledJobRunner
+
+runner = ScheduledJobRunner()
+runner.run_6hour_research_cleanup_job(dry_run=False)
 ```
 
 ### Safety Controls

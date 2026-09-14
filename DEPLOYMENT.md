@@ -55,13 +55,19 @@ This deployment guide details the steps required to deploy the **Football AI Int
 ## 4. STEP 3 — AUTOMATED 6-HOUR CLEANUP & BACKGROUND JOBS
 
 ### Option A: Server-Side PostgreSQL `pg_cron` (Recommended for Supabase)
-In Supabase SQL Editor:
-```sql
-SELECT cron.schedule(
-    '0 */6 * * *',
-    $$ DELETE FROM research_cache WHERE expires_at <= NOW() AND is_active = FALSE AND retention_required = FALSE; $$
-);
-```
+To avoid `ERROR: 3F000: schema "cron" does not exist`, enable the `pg_cron` extension first:
+1. In Supabase Dashboard, go to **Database -> Extensions**, search for `pg_cron`, and click **Enable**.
+2. Alternatively, run in the Supabase SQL Editor:
+   ```sql
+   CREATE EXTENSION IF NOT EXISTS pg_cron;
+   ```
+3. Then schedule the cleanup job:
+   ```sql
+   SELECT cron.schedule(
+       '0 */6 * * *',
+       $$ DELETE FROM research_cache WHERE expires_at <= NOW() AND is_active = FALSE AND retention_required = FALSE; $$
+   );
+   ```
 
 ### Option B: Systemd / Cron Python Scheduler
 Run `ScheduledJobRunner` via systemd background service:
