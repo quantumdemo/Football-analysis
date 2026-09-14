@@ -7,7 +7,7 @@ from src.logging import setup_logger
 from src.match.identifier import MatchIdentifier
 from src.research.web_research import ResearchEvidence
 from src.validation.validator import ValidationReport, EvidenceValidationState
-from src.features.feature_engine import MatchFeatureSet
+from src.features.feature_engine import FeatureEngine, MatchFeatureSet
 from src.models.forecast import ForecastDistribution
 from src.risk.risk_engine import RiskEvaluation
 from src.reporting.report_generator import MatchReport
@@ -19,6 +19,7 @@ class PipelineSkeleton:
     def __init__(self, config_path: str = "config/config.json"):
         self.config = SystemConfig.load_from_file(config_path)
         self.logger = setup_logger("PipelineSkeleton")
+        self.feature_engine = FeatureEngine()
         self.logger.info("Pipeline skeleton initialized successfully.")
 
     def run_skeleton(
@@ -29,7 +30,7 @@ class PipelineSkeleton:
         """Skeleton workflow validating interface handoffs across stages."""
         self.logger.info(f"Processing match skeleton for ID: {match.match_id}")
 
-        # Stubbed stage contracts
+        # Stage contracts
         validation = ValidationReport(
             match_id=match.match_id,
             is_valid=True,
@@ -38,15 +39,10 @@ class PipelineSkeleton:
             valid_evidence_count=len(raw_evidence)
         )
 
-        features = MatchFeatureSet(
+        features = self.feature_engine.extract_features(
             match_id=match.match_id,
-            home_availability_ratio=1.0,
-            away_availability_ratio=1.0,
-            home_rest_days=4.0,
-            away_rest_days=4.0,
-            weather_impact_score=0.0,
-            evidence_quality_score=0.8,
-            is_complete=True
+            valid_evidence=raw_evidence,
+            validation_report=validation
         )
 
         forecast = ForecastDistribution(
