@@ -6,7 +6,7 @@ from src.config import SystemConfig
 from src.logging import setup_logger
 from src.match.identifier import MatchIdentifier
 from src.research.web_research import ResearchEvidence
-from src.validation.validator import ValidationReport
+from src.validation.validator import ValidationReport, EvidenceValidationState
 from src.features.feature_engine import MatchFeatureSet
 from src.models.forecast import ForecastDistribution
 from src.risk.risk_engine import RiskEvaluation
@@ -33,6 +33,7 @@ class PipelineSkeleton:
         validation = ValidationReport(
             match_id=match.match_id,
             is_valid=True,
+            overall_state=EvidenceValidationState.VERIFIED,
             freshness_ok=True,
             valid_evidence_count=len(raw_evidence)
         )

@@ -8,7 +8,7 @@
 | Stage 1 | Architecture & Project Skeleton | **PASS** | Complete |
 | Stage 2 | Match Input & Identification | **PASS** | Complete |
 | Stage 3 | Web Research Engine | **PASS** | Complete |
-| Stage 4 | Data Validation Engine | NOT STARTED | Pending Stage Protocol |
+| Stage 4 | Data Validation & Evidence Engine | **PASS** | Complete |
 | Stage 5 | Feature Engine | NOT STARTED | Pending Stage Protocol |
 | Stage 6 | Forecast Models | NOT STARTED | Pending Stage Protocol |
 | Stage 7 | Probability Engine | NOT STARTED | Pending Stage Protocol |
@@ -27,3 +27,4 @@
 - **Stage 1**: Implemented modular system architecture, configuration loader (`src/config.py`), logging (`src/logging.py`), error hierarchy (`src/errors.py`), subpackage data contracts, skeleton pipeline orchestrator (`src/pipeline.py`), and test suite (`tests/test_config.py`, `tests/test_contracts.py`, `tests/test_skeleton_pipeline.py`). Status: **PASS**.
 - **Stage 2**: Implemented match input resolution, fixture validation, verification status tracking (`MatchVerificationStatus`), and ambiguity/conflict stops (`src/match/resolver.py`, `tests/test_match_identification.py`). Status: **PASS**.
 - **Stage 3**: Implemented web research collection engine (`ResearchCollector`), evidence taxonomy (`EvidenceCategory`), source domain reliability scoring, and strict filtering of gambling/odds/tipster sources (`src/research/web_research.py`, `tests/test_web_research.py`). Status: **PASS**.
+- **Stage 4**: Implemented data validation engine (`DataValidator`), explicit state tracking (`EvidenceValidationState`), duplicate claim removal, contradiction detection, freshness checks, and missing field detection (`src/validation/validator.py`, `tests/test_data_validation.py`). Status: **PASS**.
