@@ -249,11 +249,11 @@
                 <div class="grid-2">
                     <div class="form-group">
                         <label for="home_team_id">Home Team Identifier</label>
-                        <input type="text" id="home_team_id" required value="TEAM_ARSENAL">
+                        <input type="text" id="home_team_id" required value="Arsenal">
                     </div>
                     <div class="form-group">
                         <label for="away_team_id">Away Team Identifier</label>
-                        <input type="text" id="away_team_id" required value="TEAM_CHELSEA">
+                        <input type="text" id="away_team_id" required value="Chelsea">
                     </div>
                 </div>
 
@@ -393,20 +393,20 @@
     <script>
         function loadPreset(presetKey) {
             if (presetKey === 'ARS_CHE') {
-                document.getElementById('home_team_id').value = 'TEAM_ARSENAL';
-                document.getElementById('away_team_id').value = 'TEAM_CHELSEA';
+                document.getElementById('home_team_id').value = 'Arsenal';
+                document.getElementById('away_team_id').value = 'Chelsea';
                 document.getElementById('competition').value = 'Premier League';
                 document.getElementById('venue').value = 'Emirates Stadium';
                 document.getElementById('evidence_content').value = 'Arsenal star striker confirmed fit for derby. Chelsea defender suspended.';
             } else if (presetKey === 'RMA_BAR') {
-                document.getElementById('home_team_id').value = 'TEAM_REAL_MADRID';
-                document.getElementById('away_team_id').value = 'TEAM_BARCELONA';
+                document.getElementById('home_team_id').value = 'Real Madrid';
+                document.getElementById('away_team_id').value = 'Barcelona';
                 document.getElementById('competition').value = 'La Liga';
                 document.getElementById('venue').value = 'Santiago Bernabéu';
                 document.getElementById('evidence_content').value = 'El Clasico fixture. Both managers report full squad availability.';
             } else if (presetKey === 'BAY_DOR') {
-                document.getElementById('home_team_id').value = 'TEAM_BAYERN_MUNICH';
-                document.getElementById('away_team_id').value = 'TEAM_BORUSSIA_DORTMUND';
+                document.getElementById('home_team_id').value = 'Bayern Munich';
+                document.getElementById('away_team_id').value = 'Borussia Dortmund';
                 document.getElementById('competition').value = 'Bundesliga';
                 document.getElementById('venue').value = 'Allianz Arena';
                 document.getElementById('evidence_content').value = 'Der Klassiker derby. High goal-scoring form recorded for both teams.';

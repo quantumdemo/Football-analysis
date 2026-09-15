@@ -33,8 +33,11 @@ class MatchResolver:
 
         # Datetime resolution
         if isinstance(raw_time, str):
+            clean_time = raw_time.strip().replace(" T", "T").replace("Z", "+00:00")
+            if " " in clean_time and "T" not in clean_time:
+                clean_time = clean_time.replace(" ", "T")
             try:
-                scheduled_time = datetime.fromisoformat(raw_time)
+                scheduled_time = datetime.fromisoformat(clean_time)
             except ValueError:
                 raise ValidationError(f"Invalid scheduled_time format: {raw_time}")
         elif isinstance(raw_time, datetime):
